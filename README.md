@@ -13,7 +13,7 @@ El backend, desarrollado en **Flask**, almacena la información en una **base de
 - **Python 3.13.6**
 - **Flask**
 - **SQLAlchemy**
-- **PostgreSQL / MySQL**
+- **MongoDB**
 - **Docker & Docker Compose**
 - **Grafana o D3.js** → Visualización de métricas (opcional).
 
