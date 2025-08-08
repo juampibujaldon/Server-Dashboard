@@ -9,12 +9,13 @@ El backend, desarrollado en **Flask**, almacena la información en una **base de
 
 ---
 
-## 🚀 Tecnologías utilizadas
-- **Python 3.13.6**
-- **Flask**
-- **SQLAlchemy**
-- **PostgreSQL / MySQL**
-- **Docker & Docker Compose**
-- **Grafana o D3.js** → Visualización de métricas (opcional).
+🚀 Tecnologías utilizadas
 
----
+## Python 3.13.6
+## Flask 
+## PyMongo o Flask-PyMongo 
+## MongoDB 
+## Docker 
+## Grafana
+
+
