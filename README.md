@@ -1,21 +1,16 @@
-# Diseño-de-Sistemas
-# 🖥️ Dashboard de Monitoreo de Servidores
+Diseño-de-Sistemas
+🖥️ Dashboard de Monitoreo de Servidores
+📌 Descripción
 
-## 📌 Descripción
-Aplicación cliente-servidor para **monitorear métricas en tiempo real** (carga de CPU, temperatura, uso de disco) de múltiples servidores.
+Aplicación cliente-servidor para monitorear métricas en tiempo real (carga de CPU, temperatura, uso de disco) de múltiples servidores.
 
-Cada equipo monitoreado tiene un **agente** que envía periódicamente sus métricas al **servidor central**.  
-El backend, desarrollado en **Flask**, almacena la información en una **base de datos SQL** y expone una API para que un dashboard muestre gráficas y estadísticas en tiempo real.
-
----
+Cada equipo monitoreado cuenta con un agente desarrollado en Rust que recolecta métricas del sistema y las envía periódicamente al servidor central.
+El backend, también en Rust, gestiona el almacenamiento en MongoDB y expone una API para que un dashboard muestre gráficas y estadísticas en tiempo real.
 
 🚀 Tecnologías utilizadas
 
-## Python 3.13.6
-## Flask 
-## PyMongo o Flask-PyMongo 
+## Rust 
 ## MongoDB 
 ## Docker 
-## Grafana
-
-
+## Grafana 
+## PyMongo 
