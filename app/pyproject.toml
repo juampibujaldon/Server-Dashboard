@@ -1,0 +1,21 @@
+[project]
+name = "importar"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "python-dotenv>=1.0.1",
+    "flask>=3.0.0",
+    "pymongo>=4.7.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]  
+include = ["app*"]  
+exclude = ["tests*"] 
