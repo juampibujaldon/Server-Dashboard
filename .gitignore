@@ -208,3 +208,4 @@ __marimo__/
 mongo/data/
 
 Cargo.lock
+.vscode
