@@ -1,11 +1,12 @@
 import os
 import pytest
-from pymongo import MongoClient
 
 os.environ['BACKEND_ENV'] = 'testing'
 
 from app import create_app
 from config.config import TestConfig
+from db import db  
+
 
 @pytest.fixture(scope='module')
 def test_client():
@@ -14,13 +15,11 @@ def test_client():
         with flask_app.app_context():
             yield testing_client
     
-    client = MongoClient(TestConfig.MONGO_URI)
-    client.drop_database(client.get_database().name)
-    print("\nBase de datos de prueba eliminada.")
+
+    print("\nLimpiando la base de datos de prueba...")
+    db.metrics.delete_many({})
 
 def test_metrics_submission_endpoint(test_client):
-    db_client = MongoClient(TestConfig.MONGO_URI)
-    db = db_client.get_database()
     db.metrics.delete_many({}) 
 
     mock_metric = {

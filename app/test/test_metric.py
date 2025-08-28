@@ -1,9 +1,10 @@
 import os
 import unittest
 
-os.environ['BACKEND_ENV'] = 'testing'
-
 from app import create_app
+from db import db  
+
+os.environ['BACKEND_ENV'] = 'testing'
 
 class MetricsEndpointTestCase(unittest.TestCase):
 
@@ -13,7 +14,7 @@ class MetricsEndpointTestCase(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         
-        self.db = self.app.db
+        self.db = db 
         
         self.db.metrics.delete_many({})
 

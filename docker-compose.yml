@@ -1,0 +1,37 @@
+services:
+  mongodb:
+    container_name: mongodb-servidor
+    image: mongodb/mongodb-community-server:7.0.21-ubuntu2204
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${ROOT_PASSWORD}
+      - MONGO_APP_USER=${MONGO_APP_USER}
+      - MONGO_APP_PASSWORD=${MONGO_APP_PASSWORD}
+    volumes:
+      - ./mongo/data:/data/db
+      - ./mongo/mongo-init:/docker-entrypoint-initdb.d
+    command: --wiredTigerCacheSizeGB 0.5
+    networks:
+      - app-network
+
+  backend:
+    container_name: flask-backend
+    build:
+      context: ./app
+      dockerfile: dockerfile.backend
+    ports:
+      - "5001:5000"
+    environment:
+      - MONGO_URI=mongodb://monitoreo_user:monitoreo_pass@mongodb:27017/monitoring?authSource=admin
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge

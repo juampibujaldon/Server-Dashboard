@@ -1,1 +1,23 @@
-FROM baseImage
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /code
+
+COPY pyproject.toml ./
+
+RUN pip install uv && \
+    uv pip install --system --extra dev .
+
+COPY . .
+
+RUN groupadd -r appuser && useradd --no-create-home -r -g appuser appuser
+
+RUN chown -R appuser:appuser /code
+
+USER appuser
+
+EXPOSE 5000
+
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "5000"]
