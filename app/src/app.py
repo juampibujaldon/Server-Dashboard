@@ -16,3 +16,5 @@ def create_app(config_name=None):
         app.register_blueprint(api_blueprint, url_prefix='/api')
     
     return app
+
+app = create_app()
