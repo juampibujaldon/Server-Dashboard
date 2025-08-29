@@ -1,0 +1,28 @@
+# Dockerfile para Desarrollo
+# -------------------------
+# Este archivo crea un entorno de desarrollo completo para programar y ejecutar pruebas.
+# - Instala TODAS las dependencias del proyecto, incluyendo las de desarrollo (ej. pytest).
+# - Usa el servidor de desarrollo de Flask para facilitar la depuración.
+# - Está pensado para ser usado con volúmenes y docker-compose.override.yml.
+
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /code
+
+RUN groupadd -r appuser && useradd --no-create-home -r -g appuser appuser
+
+COPY --chown=appuser:appuser app/pyproject.toml ./
+
+USER appuser
+
+RUN pip install uv && \
+    uv pip install --system ".[dev]"
+
+COPY --chown=appuser:appuser app/ .
+
+EXPOSE 5000
+
+CMD ["flask", "run", "--host=0.0.0.0", "--app-dir", "src"]
