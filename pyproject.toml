@@ -1,0 +1,18 @@
+[project]
+name = "server-dashboard"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "flask==3.0.3",
+    "python-dotenv==1.0.1",
+    "pymongo==4.8.0",
+    "gunicorn==22.0.0",
+    "PyJWT==2.8.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+]

@@ -1,136 +1,211 @@
+# Server Dashboard API
 
-# Backend para Sistema de Monitoreo de Servidores
+## Descripción
 
-Este repositorio contiene el código fuente del **Backend Central**, un componente clave del sistema de monitoreo de servidores. Desarrollado en Python con Flask, su función principal es recibir, almacenar y procesar las métricas enviadas por los agentes de monitoreo.
+**Server Dashboard API** es un backend desarrollado en Flask diseñado para recibir, almacenar y gestionar métricas de rendimiento de servidores. Este sistema permite a agentes de monitoreo enviar datos como el uso de CPU, RAM, espacio en disco y temperatura, los cuales son almacenados en una base de datos MongoDB para su posterior análisis y visualización. La API cuenta con un sistema de autenticación basado en JWT para proteger sus endpoints.
 
-## 📖 Descripción General
+## Características Principales
 
-El backend expone una API REST para centralizar toda la información de los servidores monitoreados. Actúa como el cerebro del sistema, gestionando los datos históricos, la configuración de alertas y proveyendo los endpoints necesarios para que el dashboard visualice la información.
+-   **Recepción de Métricas**: Endpoint para que los agentes de monitoreo envíen los datos de rendimiento del servidor.
+    
+-   **Almacenamiento en MongoDB**: Las métricas recibidas se almacenan en una base de datos MongoDB para su persistencia y consulta.
+    
+-   **Autenticación JWT**: Los endpoints están protegidos y requieren un token JWT para su acceso, con un endpoint de `/login` para obtener el token.
+    
+-   **Configuración por Entornos**: El sistema está configurado para ejecutarse en diferentes entornos (desarrollo, testing y producción) utilizando archivos de configuración específicos.
+    
+-   **Contenerización con Docker**: El proyecto incluye un `Dockerfile` y un archivo `docker-compose.yml` para facilitar el despliegue en contenedores.
+    
+-   **Testing**: Incluye una suite de tests unitarios y de integración para asegurar el correcto funcionamiento de la API.
+    
+## Tecnologías Utilizadas
 
-## ✨ Características Principales
+-   **Backend**: Flask
+    
+-   **Base de Datos**: MongoDB (a través de PyMongo)
+    
+-   **Servidor WSGI**: Gunicorn
+    
+-   **Autenticación**: JSON Web Tokens (PyJWT)
+    
+-   **Gestión de Dependencias**: uv
+    
+-   **Contenerización**: Docker
+    
+-   **Testing**: Pytest
+    
 
-  * **API REST Robusta**: Recibe métricas (CPU, RAM, disco, temperatura) de múltiples agentes de forma segura.
-  * **Almacenamiento Persistente**: Guarda el historial de métricas y la configuración del sistema en una base de datos **MongoDB**.
-  * **Sistema de Alertas**: Ofrece endpoints para configurar umbrales y condiciones que disparan notificaciones automatizadas.
-  * **Integración Sencilla**: Diseñado para conectarse fácilmente con un dashboard (como Grafana o uno personalizado) y servicios de notificación (Email, Slack, etc.).
-  * **Contenerizado con Docker**: Se distribuye con un `Dockerfile` para un despliegue rápido, consistente y aislado.
-
-## 🛠️ Prerrequisitos
-
-Para ejecutar este proyecto, necesitarás:
-
-  * [Docker](https://www.google.com/search?q=https-www.docker.com-get-started) y [Docker Compose](https://www.google.com/search?q=https-docs.docker.com-compose-install-)
-  * [Python](https://www.google.com/search?q=https-www.python.org-downloads-) 3.11+
-  * [uv](https://www.google.com/search?q=https-github.com-astral-sh-uv) (Recomendado para gestionar el entorno virtual)
-
-## 🚀 Puesta en Marcha con Docker (Recomendado)
-
-La forma más sencilla de levantar todo el entorno (backend y base de datos) es con Docker Compose.
-
-1.  **Clona el repositorio:**
-    ```bash
-    git clone https://github.com/juampibujaldon/Server-Dashboard-
-    cd Server-Dashboard-/app
-    ```
-2.  **Configura las variables de entorno:**
-    Crea un archivo `.env` a partir del ejemplo y ajústalo con tus credenciales para la base de datos.
-    ```bash
-    cp .env.example .env
-    # Abre y edita el archivo .env
-    ```
-3.  **Levanta los servicios:**
-    Este comando construirá las imágenes y levantará los contenedores del backend y de MongoDB en segundo plano.
-    ```bash
-    docker-compose up --build -d
-    ```
-4.  **Verifica que todo funcione:**
-    La API debería estar disponible en `http://localhost:8000`. Puedes probar el endpoint de status:
-    ```bash
-    curl http://localhost:8000/api/status
-    ```
-    Deberías recibir una respuesta como: `{"status": "ok"}`.
-
-## ⚙️ Desarrollo Local (Sin Docker)
-
-Sigue estos pasos para configurar y correr el proyecto en tu máquina local.
-
-1.  **Clona el repositorio (si aún no lo has hecho):**
-
-    ```bash
-    git clone https://github.com/juampibujaldon/Server-Dashboard-
-    cd Server-Dashboard-/app
-    ```
-
-2.  **Crea y activa el entorno virtual:**
-    Usaremos `uv` para crear un entorno virtual llamado `.venv`.
-
-    ```bash
-    uv venv
-    source .venv/bin/activate
-    ```
-
-    *En Windows, el comando de activación es `.venv\Scripts\activate`*.
-
-3.  **Instala todas las dependencias:**
-    Este comando lee el archivo `pyproject.toml` e instala las dependencias del proyecto y las de desarrollo (como `pytest` y `uvicorn`).
-
-    ```bash
-    uv pip install ".[dev]"
-    ```
-
-4.  **Instala el proyecto en modo editable:**
-    Este es un paso crucial. Hace que tu aplicación sea "instalable" en el entorno, solucionando problemas de importación.
-
-    ```bash
-    uv pip install -e .
-    ```
-
-5.  **Configura las variables de entorno:**
-    Copia el archivo de ejemplo y configúralo para el entorno de desarrollo.
-
-    ```bash
-    cp .env.example .env
-    # Edita el .env si es necesario para que coincida con tu base de datos local
-    ```
-
-6.  **Ejecuta la aplicación:**
-    Ahora puedes iniciar el servidor con Uvicorn. La bandera `--reload` hará que el servidor se reinicie automáticamente cuando detecte cambios en el código.
-
-    ```bash
-    uv run uvicorn src.main:app --reload
-    ```
-
-    La API estará disponible en `http://12-7.0.0.1:8000`.
-
-## 🧪 Ejecución de Tests
-
-Para asegurar la calidad y el correcto funcionamiento de la API, puedes ejecutar la suite de pruebas.
-
-1.  **Asegúrate de tener un MongoDB para tests:**
-    Puedes usar la instancia de Docker para esto.
-    ```bash
-    docker-compose up -d mongo
-    ```
-2.  **Ejecuta los tests con `pytest`:**
-    Asegúrate de que tu entorno virtual esté activado.
-    ```bash
-    uv run pytest -v
-    ```
-
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
-/
-├── src/                  # Código fuente de la aplicación
-│   ├── config/           # Módulos de configuración
-│   ├── models/           # Modelos de datos
-│   ├── routes/           # Lógica de los endpoints (en routes.py)
-│   ├── services/         # Lógica de negocio
-│   ├── app.py            # Fábrica de la aplicación Flask
-│   └── db.py             # Configuración de la conexión a la BD
-├── tests/                # Pruebas unitarias y de integración
-├── .env.example          # Ejemplo de variables de entorno
-├── docker-compose.yml    # Orquestación de contenedores
-├── Dockerfile            # Definición del contenedor del backend
-└── pyproject.toml        # Dependencias y configuración del proyecto
+Server-Dashboard/
+├── app/
+│   ├── config/
+│   │   └── config.py
+│   ├── models/
+│   │   ├── alert.py
+│   │   ├── metric.py
+│   │   └── server.py
+│   ├── services/
+│   │   └── metric_services.py
+│   ├── __init__.py
+│   ├── db.py
+│   └── routes.py
+├── docker/
+│   ├── docker-compose.yml
+│   └── .env
+├── documents/
+│   ├── caso de uso.png
+│   └── diagrama de clase.png
+├── test/
+│   ├── test_app.py
+│   └── test_metric.py
+├── .env
+├── app.py
+├── Dockerfile
+├── pyproject.toml
+└── uv.lock
+
 ```
+
+## Instalación y Configuración
+
+### Prerrequisitos
+
+-   Python 3.13
+    
+-   Docker y Docker Compose
+    
+-   `uv` (manejador de paquetes de Python)
+    
+
+### Instalación
+
+1.  **Clona el repositorio**:
+    
+    Bash
+    
+    ```
+    git clone "https://github.com/juampibujaldon/Server-Dashboard"
+    cd Server-Dashboard
+    
+    ```
+    
+2.  Instala las dependencias:
+    
+    Utiliza uv para instalar las dependencias definidas en pyproject.toml y uv.lock.
+    
+    Bash
+    
+    ```
+    uv sync
+    
+    ```
+    
+
+
+### Configuración
+
+1.  **Crea un archivo `.env`**: Copia el archivo `.env.example` o crea un nuevo archivo `.env` en la raíz del proyecto. Este archivo contendrá las variables de entorno para la configuración de la base de datos y las credenciales de administrador.
+    
+    **.env.example:**
+    
+    ```
+    # Se ejecuta de manera local.
+    BACKEND_ENV=development
+    
+    # Clave secreta para la firma de JWT y otras funciones de seguridad.
+    # Se recomienda generar una clave segura y única para producción.
+    SECRET_KEY=
+    
+    # Cadenas de conexión a MongoDB para los diferentes entornos.
+    # Reemplaza los valores con tus propias credenciales y configuración.
+    MONGO_URI_PROD=mongodb://<usuario>:<contraseña>@<host>:<puerto>/<base_de_datos_prod>?authSource=admin
+    MONGO_URI_DEV=mongodb://<usuario>:<contraseña>@<host>:<puerto>/<base_de_datos_dev>?authSource=admin
+    MONGO_URI_TEST=mongodb://<usuario>:<contraseña>@<host>:<puerto>/<base_de_datos_test>?authSource=admin
+    
+    ```
+    
+2.  **Configuración para Docker**: Asegúrate de que el archivo `docker/.env.example` esté configurado con las variables necesarias para el entorno de Docker.
+    
+
+## Uso
+
+### Ejecutar la Aplicación
+
+#### Con Docker Compose
+
+Para levantar el servicio de backend junto con la base de datos MongoDB, utiliza Docker Compose:
+
+Bash
+
+```
+docker-compose up -d
+
+```
+
+La API estará disponible en `http://localhost:5000`.
+
+#### De forma local
+
+Si prefieres ejecutar la aplicación de forma local para desarrollo:
+
+Bash
+
+```
+flask run
+
+```
+
+### Endpoints de la API
+
+-   POST /api/auth/login:
+    
+    Autentica a un usuario y devuelve un token JWT.
+    
+    **Body**:
+    
+    JSON
+    
+    ```
+    {
+        "username": "admin",
+        "password": "S3cr3t4dm1n"
+    }
+    
+    ```
+    
+-   POST /api/metrics:
+    
+    Envía una nueva métrica del servidor. Requiere un token JWT en la cabecera Authorization.
+    
+    **Body**:
+    
+    JSON
+    
+    ```
+    {
+        "serverId": "server-01",
+        "cpu_usage": 75.5,
+        "ram_usage": 5.2
+    }
+    
+    ```
+    
+-   GET /api/metrics/<server_id>:
+    
+    Obtiene todas las métricas de un servidor específico. Requiere un token JWT.
+    
+
+## Testing
+
+Para ejecutar la suite de tests, utiliza Pytest:
+
+Bash
+
+```
+pytest
+
+```
+
+Esto ejecutará todos los tests definidos en el directorio `test/`.

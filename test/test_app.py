@@ -4,8 +4,8 @@ import pytest
 os.environ['BACKEND_ENV'] = 'testing'
 
 from app import create_app
-from config.config import TestConfig
-from db import db  
+from app.config.config import TestConfig
+from app.db import db  
 
 
 @pytest.fixture(scope='module')
@@ -15,7 +15,7 @@ def test_client():
         with flask_app.app_context():
             yield testing_client
     
-
+#TODO test db tambien y aca proabr q devuelva 200 nomás
     print("\nLimpiando la base de datos de prueba...")
     db.metrics.delete_many({})
 

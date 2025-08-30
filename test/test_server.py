@@ -1,4 +1,4 @@
-from models.server import Server
+from app.models.server import Server
 
 def test_server_creation_and_attributes():
     server_name = "web-server-01"
