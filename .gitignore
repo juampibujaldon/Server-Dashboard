@@ -209,3 +209,5 @@ mongo/data/
 
 Cargo.lock
 .vscode
+
+.code-workspace

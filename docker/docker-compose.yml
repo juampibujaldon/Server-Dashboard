@@ -1,14 +1,23 @@
 services:
   backend:
-    container_name: flask-backend
+    container_name: mi-flask-app
     image: flask-backend:v1.0.0
+    build:
+      context: ../
+      dockerfile: Dockerfile
     ports:
-      "5000:5000"
-  environment:
-    BACKEND_ENV=${BACKEND_ENV}
-    SECRET_KEY=${SECRET_KEY}
-    MONGO_URI_PROD=mongodb://${MONGO_APP_USER}:${MONGO_APP_PASSWORD}@${MONGO_HOST}:27017/PROD_MONITOREAR?authSource=admin
-    MONGO_URI_DEV=mongodb://${MONGO_APP_USER}:${MONGO_APP_PASSWORD}@${MONGO_HOST}:27017/DEV_MONITOREAR?authSource=admin
-    MONGO_URI_TEST=mongodb://${MONGO_APP_USER}:${MONGO_APP_PASSWORD}@${MONGO_HOST}:27017/TEST_MONITOREAR?authSource=admin
-    
-    PYTHONPATH=/code/src
+      - "5000:5000"
+    environment:
+      BACKEND_ENV: ${BACKEND_ENV}
+      SECRET_KEY: ${SECRET_KEY}
+      ADMIN_USERNAME: ${ADMIN_USERNAME}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      MONGO_URI_PROD: mongodb://${MONGO_APP_USER}:${MONGO_APP_PASSWORD}@${MONGO_HOST}:27017/PROD_MONITOREAR?authSource=admin
+      MONGO_URI_DEV: mongodb://${MONGO_APP_USER}:${MONGO_APP_PASSWORD}@${MONGO_HOST}:27017/DEV_MONITOREAR?authSource=admin
+      MONGO_URI_TEST: mongodb://${MONGO_APP_USER}:${MONGO_APP_PASSWORD}@${MONGO_HOST}:27017/TEST_MONITOREAR?authSource=admin
+    networks:
+      - server-dashboard-net
+
+networks:
+  server-dashboard-net:
+    external: true
