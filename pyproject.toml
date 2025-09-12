@@ -10,6 +10,8 @@ dependencies = [
     "pymongo==4.8.0",
     "gunicorn==22.0.0",
     "PyJWT==2.8.0",
+    "mongomock>=4.3.0",
+    "pytest-env>=1.1.5",
 ]
 
 [dependency-groups]
