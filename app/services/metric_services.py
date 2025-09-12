@@ -1,27 +1,25 @@
-import datetime
-from ..db import db_manager
+from typing import Dict, List, Any
+from bson import ObjectId
+from app.db import db_manager
 
-def save_metric(data):
-    db = db_manager.get_db()
-    
-    server_id = data.get('serverId')
-    cpu_usage = data.get('cpu_usage')
-    ram_usage = data.get('ram_usage')
+def _col():
+    return db_manager.get_db().metrics
 
-    if not all([server_id, cpu_usage, ram_usage]):
-        raise ValueError("Faltan datos en la métrica")
+def save_metric(payload: Dict[str, Any]) -> str:
+    res = _col().insert_one(payload)
+    return str(res.inserted_id)
 
-    metric_collection = db.metrics
-    result = metric_collection.insert_one({
-        "serverId": server_id,
-        "cpu_usage": cpu_usage,
-        "ram_usage": ram_usage,
-        "timestamp": datetime.datetime.now(datetime.timezone.utc)
-    })
-    
-    return result.inserted_id
+def find_metrics_by_server(server_id: str) -> List[Dict[str, Any]]:
+    return list(_col().find({"serverId": server_id}))
 
-def find_metrics_by_server(server_id):
-    db = db_manager.get_db()
-    metrics = list(db.metrics.find({"serverId": server_id}, {'_id': 0}))
-    return metrics
+def update_metric_by_id(metric_id: str, updates: Dict[str, Any]) -> int:
+    res = _col().update_one({"_id": ObjectId(metric_id)}, {"$set": updates})
+    return res.modified_count
+
+def delete_metric_by_id(metric_id: str) -> int:
+    res = _col().delete_one({"_id": ObjectId(metric_id)})
+    return res.deleted_count
+
+def delete_metrics_by_server(server_id: str) -> int:
+    res = _col().delete_many({"serverId": server_id})
+    return res.deleted_count
