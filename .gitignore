@@ -212,3 +212,5 @@ Cargo.lock
 
 .code-workspace
 Server-Dashboard-.code-workspace
+
+.env.test
