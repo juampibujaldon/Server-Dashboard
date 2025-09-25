@@ -2,7 +2,7 @@
 
 ## Descripción
 
-**Server Dashboard API** es un backend desarrollado en Flask diseñado para recibir, almacenar y gestionar métricas de rendimiento de servidores. Este sistema permite a agentes de monitoreo enviar datos como el uso de CPU, RAM, espacio en disco y temperatura, los cuales son almacenados en una base de datos MongoDB para su posterior análisis y visualización. La API cuenta con un sistema de autenticación basado en JWT para proteger sus endpoints.
+**Server Dashboard API** es un backend desarrollado en Flask diseñado para recibir, almacenar y gestionar métricas de rendimiento de servidores. Este sistema permite a agentes de monitoreo enviar datos como el uso de CPU, RAM, espacio en disco y temperatura, los cuales son almacenados en una base de datos MongoDB para su posterior análisis y visualización.
 
 ## Características Principales
 
@@ -10,13 +10,13 @@
     
 -   **Almacenamiento en MongoDB**: Las métricas recibidas se almacenan en una base de datos MongoDB para su persistencia y consulta.
     
--   **Autenticación JWT**: Los endpoints están protegidos y requieren un token JWT para su acceso, con un endpoint de `/login` para obtener el token.
+-   [Opcional] Autenticación: no implementada en este repo (se puede agregar JWT en el futuro).
     
 -   **Configuración por Entornos**: El sistema está configurado para ejecutarse en diferentes entornos (desarrollo, testing y producción) utilizando archivos de configuración específicos.
     
 -   **Contenerización con Docker**: El proyecto incluye un `Dockerfile` y un archivo `docker-compose.yml` para facilitar el despliegue en contenedores.
     
--   **Testing**: Incluye una suite de tests unitarios y de integración para asegurar el correcto funcionamiento de la API.
+-   **Testing**: Suite de tests unitarios y de integración con Pytest. En entorno de testing se usa una BD en memoria con `mongomock` (no requiere Mongo real).
     
 ## Tecnologías Utilizadas
 
@@ -47,7 +47,16 @@ Server-Dashboard/
 │   │   ├── metric.py
 │   │   └── server.py
 │   ├── services/
-│   │   └── metric_services.py
+│   │   ├── metric_services.py
+│   │   ├── server_services.py
+│   │   └── alert_services.py
+│   ├── repositories/
+│   │   ├── metrics_repo.py
+│   │   ├── servers_repo.py
+│   │   └── alerts_repo.py
+│   ├── utils/
+│   │   ├── serialization.py
+│   │   └── validation.py
 │   ├── __init__.py
 │   ├── db.py
 │   └── routes.py
@@ -72,7 +81,7 @@ Server-Dashboard/
 
 ### Prerrequisitos
 
--   Python 3.13
+-   Python 3.11+ (probado en 3.13)
     
 -   Docker y Docker Compose
     
@@ -135,49 +144,35 @@ Server-Dashboard/
 
 #### Con Docker Compose
 
-Para levantar el servicio de backend junto con la base de datos MongoDB, utiliza Docker Compose:
-
-Bash
+- Crea la red si aún no existe:
 
 ```
-docker-compose up -d
-
+docker network create server-dashboard-net || true
 ```
 
-La API estará disponible en `http://localhost:5000`.
+- Carga variables y levanta el backend:
+
+```
+cd docker
+docker compose --env-file .env up -d --build
+```
+
+La API queda en `http://localhost:5000`.
 
 #### De forma local
 
-Si prefieres ejecutar la aplicación de forma local para desarrollo:
-
-Bash
-
 ```
-flask run
-
+uv sync
+export BACKEND_ENV=development
+export MONGO_URI_DEV="mongodb://<user>:<pass>@localhost:27017/DEV_MONITOREAR?authSource=admin"
+FLASK_APP=app.py flask run --debug
 ```
 
 ### Endpoints de la API
 
--   POST /api/auth/login:
-    
-    Autentica a un usuario y devuelve un token JWT.
-    
-    **Body**:
-    
-    JSON
-    
-    ```
-    {
-        "username": "admin",
-        "password": "S3cr3t4dm1n"
-    }
-    
-    ```
-    
 -   POST /api/metrics:
     
-    Envía una nueva métrica del servidor. Requiere un token JWT en la cabecera Authorization.
+    Envía una nueva métrica del servidor.
     
     **Body**:
     
@@ -187,25 +182,28 @@ flask run
     {
         "serverId": "server-01",
         "cpu_usage": 75.5,
-        "ram_usage": 5.2
+        "ram_usage": 55.2,
+        "disk_space": 80.1,
+        "temperature": 60.0
     }
     
     ```
     
 -   GET /api/metrics/<server_id>:
     
-    Obtiene todas las métricas de un servidor específico. Requiere un token JWT.
+    Obtiene todas las métricas de un servidor específico. Devuelve `id` serializado (no `_id`).
     
 
 ## Testing
 
-Para ejecutar la suite de tests, utiliza Pytest:
-
-Bash
+En testing se usa `mongomock`, por lo que no necesitas MongoDB levantado.
 
 ```
-pytest
-
+uv sync
+pytest -q
 ```
 
-Esto ejecutará todos los tests definidos en el directorio `test/`.
+Variables relevantes de test (ver `pytest.ini` y `test/conftest.py`):
+
+- `BACKEND_ENV=testing`
+- `MONGO_URI_TEST` se usa para extraer el nombre de la base (no se conecta a host real en testing)
