@@ -1,4 +1,5 @@
 from dataclasses import dataclass, asdict
+from typing import Optional
 
 @dataclass
 class Metric:
@@ -7,7 +8,7 @@ class Metric:
     ram_usage: float
     disk_space: float
     temperature: float
-    id: str = None
+    id: Optional[str] = None
 
     def to_dict(self):
         return asdict(self)

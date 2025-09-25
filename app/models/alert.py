@@ -1,4 +1,5 @@
 from dataclasses import dataclass, asdict
+from typing import Optional
 
 @dataclass
 class Alert:
@@ -6,7 +7,7 @@ class Alert:
     metric_type: str  
     threshold: float  
     condition: str   
-    id: str = None
+    id: Optional[str] = None
 
     def to_dict(self):
         return asdict(self)
