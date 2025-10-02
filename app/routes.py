@@ -1,27 +1,13 @@
-from flask import Blueprint, request, jsonify
-from .services import metric_services as metric_service
-from .utils.validation import validate_metric_payload
-from .utils.serialization import serialize_many
+from flask import Blueprint
+
+from app.resources import MetricsResource, MetricsByServerResource
 
 api = Blueprint("api", __name__)
 
-@api.route("/metrics", methods=["POST"])
-def add_metric():
-    data = request.get_json()
-    if not data:
-        return jsonify({"error": "Cuerpo de la petición inválido"}), 400
-    try:
-        ok, err = validate_metric_payload(data)
-        if not ok:
-            return jsonify({"error": err}), 400
-        metric_service.save_metric(data)
-        return jsonify({"message": "Métrica añadida correctamente"}), 201
-    except ValueError as e:
-        return jsonify({"error": str(e)}), 400
-    except Exception:
-        return jsonify({"error": "Ocurrió un error en el servidor"}), 500
+metrics_view = MetricsResource.as_view("metrics")
+api.add_url_rule("/metrics", view_func=metrics_view, methods=["POST"])
 
-@api.route("/metrics/<server_id>", methods=["GET"])
-def get_metrics(server_id):
-    metrics = metric_service.find_metrics_by_server(server_id)
-    return jsonify(serialize_many(metrics)), 200
+metrics_by_server_view = MetricsByServerResource.as_view("metrics_by_server")
+api.add_url_rule(
+    "/metrics/<string:server_id>", view_func=metrics_by_server_view, methods=["GET"]
+)
