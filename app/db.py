@@ -8,6 +8,8 @@ from flask import current_app
 from pymongo import MongoClient
 from pymongo.errors import ConfigurationError, ServerSelectionTimeoutError
 
+from app.patterns import SingletonMeta
+
 try:
     import mongomock
 except Exception:
@@ -165,7 +167,7 @@ class InMemoryMongoClient:
         self._databases.clear()
 
 
-class DBManager:
+class DBManager(metaclass=SingletonMeta):
     def __init__(self):
         self.client = None
 

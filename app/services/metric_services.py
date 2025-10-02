@@ -1,9 +1,19 @@
-from typing import Dict, List, Any
+from typing import Any, Dict, List
+
+from app.mapping import MetricMapper
+from app.patterns import MetricBuilder, MetricFactory, get_metrics_observable
 from app.repositories.metrics_repo import MetricsRepository as Repo
 
 
 def save_metric(payload: Dict[str, Any]) -> str:
-    return Repo.insert(payload)
+    metric = MetricFactory.from_payload(payload)
+    doc = MetricMapper.to_document(metric)
+    metric_id = Repo.insert(doc)
+
+    metric_with_id = MetricBuilder(metric.to_dict()).with_id(metric_id).build()
+    get_metrics_observable().notify(metric_with_id)
+
+    return metric_id
 
 
 def find_metrics_by_server(server_id: str) -> List[Dict[str, Any]]:
