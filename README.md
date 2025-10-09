@@ -24,7 +24,7 @@
     
 -   **Base de Datos**: MongoDB (a través de PyMongo)
     
--   **Servidor WSGI**: Gunicorn
+-   **Servidor WSGI**: Gunicorn / Granian (alto rendimiento)
     
 -   **Autenticación**: JSON Web Tokens (PyJWT)
     
@@ -161,11 +161,28 @@ La API queda en `http://localhost:5000`.
 
 #### De forma local
 
+**Opción 1: Con Flask (desarrollo)**
 ```
 uv sync
 export BACKEND_ENV=development
 export MONGO_URI_DEV="mongodb://<user>:<pass>@localhost:27017/DEV_MONITOREAR?authSource=admin"
 FLASK_APP=app.py flask run --debug
+```
+
+**Opción 2: Con Granian (alto rendimiento)**
+```
+uv sync
+export BACKEND_ENV=development
+export MONGO_URI_DEV="mongodb://<user>:<pass>@localhost:27017/DEV_MONITOREAR?authSource=admin"
+python run_granian.py
+```
+
+**Opción 3: Comando directo de Granian**
+```
+uv sync
+export BACKEND_ENV=development
+export MONGO_URI_DEV="mongodb://<user>:<pass>@localhost:27017/DEV_MONITOREAR?authSource=admin"
+granian --interface wsgi --host 0.0.0.0 --port 5000 --reload granian_config:app
 ```
 
 ### Endpoints de la API
