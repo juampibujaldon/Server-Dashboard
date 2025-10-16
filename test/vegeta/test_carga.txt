@@ -1,0 +1,8 @@
+POST http://localhost:5000/api/metrics
+
+Content-Type: application/json
+
+@test.json
+
+GET http://localhost:8000/
+
