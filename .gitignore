@@ -216,3 +216,5 @@ Server-Dashboard-.code-workspace
 .env.test
 
 .DS_Store
+flask-backend.tar.gz
+*.bin
