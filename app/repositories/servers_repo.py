@@ -1,12 +1,12 @@
 from typing import Dict, Any, List, Optional
 from bson import ObjectId
 from bson.errors import InvalidId
-from app.db import db_manager
 
 
 class ServersRepository:
     @staticmethod
     def _col():
+        from app.db import db_manager
         return db_manager.get_db().servers
 
     @classmethod

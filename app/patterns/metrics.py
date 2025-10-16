@@ -7,7 +7,6 @@ from typing import Dict, List, Protocol
 
 from app.models.metric import Metric
 from app.patterns.singleton import SingletonMeta
-from app.services import alert_services
 from app.models.alert import Alert
 
 
@@ -155,6 +154,7 @@ class CriticalMetricObserver(MetricObserver):
             condition=severity,
         )
         try:
+            from app.services import alert_services
             alert_services.create_alert(alert)
         except Exception:
             # Preferimos no romper el flujo si falla el guardado del alerta
