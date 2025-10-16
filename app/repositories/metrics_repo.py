@@ -19,6 +19,10 @@ class MetricsRepository:
         return list(cls._col().find({"serverId": server_id}))
 
     @classmethod
+    def list_all(cls) -> List[Dict[str, Any]]:
+        return list(cls._col().find({}))
+
+    @classmethod
     def update_by_id(cls, metric_id: str, updates: Dict[str, Any]) -> int:
         try:
             oid = ObjectId(metric_id)
@@ -40,4 +44,3 @@ class MetricsRepository:
     def delete_by_server(cls, server_id: str) -> int:
         res = cls._col().delete_many({"serverId": server_id})
         return res.deleted_count
-

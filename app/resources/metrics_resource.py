@@ -8,6 +8,10 @@ from app.utils.validation import validate_metric_payload
 
 class MetricsResource(MethodView):
 
+    def get(self):
+        metrics = metric_services.find_all_metrics()
+        return jsonify(serialize_many(metrics)), 200
+
     def post(self):
         payload = request.get_json(silent=True) or {}
         if not payload:

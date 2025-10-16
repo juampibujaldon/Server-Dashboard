@@ -20,6 +20,10 @@ def find_metrics_by_server(server_id: str) -> List[Dict[str, Any]]:
     return Repo.list_by_server(server_id)
 
 
+def find_all_metrics() -> List[Dict[str, Any]]:
+    return Repo.list_all()
+
+
 def update_metric_by_id(metric_id: str, updates: Dict[str, Any]) -> int:
     return Repo.update_by_id(metric_id, updates)
 
