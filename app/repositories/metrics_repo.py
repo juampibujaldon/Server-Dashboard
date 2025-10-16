@@ -16,7 +16,7 @@ class MetricsRepository:
 
     @classmethod
     def list_by_server(cls, server_id: str) -> List[Dict[str, Any]]:
-        return list(cls._col().find({"serverId": server_id}))
+        return list(cls._col().find({"server_id": server_id}))
 
     @classmethod
     def list_all(cls) -> List[Dict[str, Any]]:
@@ -42,5 +42,5 @@ class MetricsRepository:
 
     @classmethod
     def delete_by_server(cls, server_id: str) -> int:
-        res = cls._col().delete_many({"serverId": server_id})
+        res = cls._col().delete_many({"server_id": server_id})
         return res.deleted_count

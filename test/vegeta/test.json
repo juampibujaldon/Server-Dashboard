@@ -1,7 +1,7 @@
 {
     "cpu_usage": 19.53508,
     "ram_usage": 86.89974,
-    "serverId": "MSI",
+    "server_id": "MSI",
     "disk_space": 10.0,
     "temperature": 10.0,
     "timestamp": "Thu, 09 Oct 2025 15:21:17 GMT" }

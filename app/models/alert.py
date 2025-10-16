@@ -3,7 +3,7 @@ from typing import Optional
 
 @dataclass
 class Alert:
-    serverId: str
+    server_id: str
     metric_type: str  
     threshold: float  
     condition: str   

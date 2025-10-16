@@ -3,20 +3,20 @@ from app.models.alert import Alert
 
 @pytest.fixture
 def alert_sample():
-    return Alert(serverId="srv-1", metric_type="cpu_usage", threshold=80.0, condition=">")
+    return Alert(server_id="srv-1", metric_type="cpu_usage", threshold=80.0, condition=">")
 
 def test_id_defaults_to_none(alert_sample):
     assert alert_sample.id is None
 
 def test_fields(alert_sample):
-    assert alert_sample.serverId == "srv-1"
+    assert alert_sample.server_id == "srv-1"
     assert alert_sample.metric_type == "cpu_usage"
     assert isinstance(alert_sample.threshold, float)
     assert alert_sample.condition == ">"
 
 def test_to_dict(alert_sample):
     d = alert_sample.to_dict()
-    assert set(d.keys()) == {"serverId", "metric_type", "threshold", "condition", "id"}
+    assert set(d.keys()) == {"server_id", "metric_type", "threshold", "condition", "id"}
     assert d["metric_type"] == "cpu_usage"
 
 def test_value_equality():

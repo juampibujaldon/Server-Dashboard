@@ -1,5 +1,5 @@
 def test_metrics_get_endpoint_serialization(client, db):
-    payload = {"serverId":"srv-get-01","cpu_usage":10.0,"ram_usage":20.0,"disk_space":30.0,"temperature":40.0}
+    payload = {"server_id":"srv-get-01","cpu_usage":10.0,"ram_usage":20.0,"disk_space":30.0,"temperature":40.0}
     r = client.post("/api/metrics", json=payload)
     assert r.status_code == 201
 

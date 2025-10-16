@@ -1,7 +1,7 @@
 from typing import Dict, Any, Tuple
 
 
-REQUIRED_METRIC_FIELDS = ("serverId", "cpu_usage", "ram_usage", "disk_space", "temperature")
+REQUIRED_METRIC_FIELDS = ("server_id", "cpu_usage", "ram_usage", "disk_space", "temperature")
 
 
 def validate_metric_payload(payload: Dict[str, Any]) -> Tuple[bool, str | None]:

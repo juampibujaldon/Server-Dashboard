@@ -9,7 +9,7 @@ def test_create_and_list_by_server(db):
     out = svc.find_metrics_by_server("srv-1")
     assert isinstance(out, list)
     assert len(out) >= 1
-    assert out[0]["serverId"] == "srv-1"
+    assert out[0]["server_id"] == "srv-1"
 
 def test_update_by_id(db):
     mid = svc.save_metric(Metric("srv-upd", 1.0, 2.0, 3.0, 4.0).to_dict())
@@ -29,4 +29,4 @@ def test_delete_by_server(db):
     svc.save_metric(Metric("srv-x", 5, 6, 7, 8).to_dict())
     deleted = svc.delete_metrics_by_server("srv-x")
     assert deleted >= 2
-    assert db.metrics.count_documents({"serverId": "srv-x"}) == 0
+    assert db.metrics.count_documents({"server_id": "srv-x"}) == 0

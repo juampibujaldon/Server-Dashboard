@@ -19,7 +19,7 @@ class MetricBuilder:
         self._data: Dict = base.copy() if base else {}
 
     def with_server(self, server_id: str) -> "MetricBuilder":
-        self._data["serverId"] = server_id
+        self._data["server_id"] = server_id
         return self
 
     def with_cpu_usage(self, cpu: float) -> "MetricBuilder":
@@ -44,7 +44,7 @@ class MetricBuilder:
         return self
 
     def build(self) -> Metric:
-        required = ("serverId", "cpu_usage", "ram_usage", "disk_space", "temperature")
+        required = ("server_id", "cpu_usage", "ram_usage", "disk_space", "temperature")
         missing = [field for field in required if field not in self._data]
         if missing:
             raise ValueError(f"Faltan campos obligatorios en MetricBuilder: {', '.join(missing)}")
@@ -53,7 +53,7 @@ class MetricBuilder:
     @classmethod
     def from_payload(cls, payload: Dict) -> Metric:
         builder = cls()
-        builder.with_server(payload["serverId"])  # type: ignore[index]
+        builder.with_server(payload["server_id"])  # type: ignore[index]
         builder.with_cpu_usage(payload["cpu_usage"])
         builder.with_ram_usage(payload["ram_usage"])
         builder.with_disk_space(payload["disk_space"])
@@ -147,7 +147,7 @@ class CriticalMetricObserver(MetricObserver):
 
         severity = ", ".join(f"{name}={value:.1f}" for name, value in breaches)
         alert = Alert(
-            serverId=metric.serverId,
+            server_id=metric.server_id,
             metric_type="critical_metric",
             threshold=max(value for _, value in breaches),
             condition=severity,
@@ -185,7 +185,7 @@ class MetricFactory:
         registry = get_metric_registry()
         base_metric = registry.clone("default")
         builder = MetricBuilder(base_metric.to_dict())
-        builder.with_server(payload["serverId"])
+        builder.with_server(payload["server_id"])
         builder.with_cpu_usage(payload["cpu_usage"])
         builder.with_ram_usage(payload["ram_usage"])
         builder.with_disk_space(payload["disk_space"])

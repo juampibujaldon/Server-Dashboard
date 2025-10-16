@@ -3,7 +3,7 @@ from typing import Optional
 
 @dataclass
 class Metric:
-    serverId: str
+    server_id: str
     cpu_usage: float
     ram_usage: float
     disk_space: float

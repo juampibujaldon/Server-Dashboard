@@ -24,7 +24,7 @@ class AlertsRepository:
 
     @classmethod
     def list_by_server(cls, server_id: str) -> List[Dict[str, Any]]:
-        return list(cls._col().find({"serverId": server_id}))
+        return list(cls._col().find({"server_id": server_id}))
 
     @classmethod
     def update(cls, alert_id: str, updates: Dict[str, Any]) -> int:

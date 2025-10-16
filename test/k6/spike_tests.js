@@ -14,7 +14,7 @@ export const options = {
 
 const BASE_URL = 'http://localhost:5000/api';
 const payload = JSON.stringify({
-    serverId: 'MSI',
+    server_id: 'MSI',
     cpu_usage: 20.5,
     ram_usage: 55.3,
     disk_space: 40.0,
