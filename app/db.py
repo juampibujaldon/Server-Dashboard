@@ -4,7 +4,6 @@ from copy import deepcopy
 from urllib.parse import urlparse
 
 from bson import ObjectId
-from flask import current_app
 from pymongo import MongoClient
 from pymongo.errors import ConfigurationError, ServerSelectionTimeoutError
 
@@ -169,11 +168,15 @@ class InMemoryMongoClient:
 class DBManager:
     def __init__(self):
         self.client = None
+        self.mongo_uri = None
 
     def init_app(self, app):
         mongo_uri = app.config.get("MONGO_URI")
         if not mongo_uri:
             raise ValueError("MONGO_URI is not configured in the Flask app.")
+        
+        # Guardar la URI para uso posterior sin depender de Flask
+        self.mongo_uri = mongo_uri
 
         env_name = os.getenv("BACKEND_ENV", "development").lower()
 
@@ -209,11 +212,13 @@ class DBManager:
     def get_db(self):
         if not self.client:
             raise RuntimeError("Database has not been initialised. Call init_app first.")
+        
+        if not self.mongo_uri:
+            raise RuntimeError("MongoDB URI has not been configured. Call init_app first.")
 
-        cfg_uri = current_app.config.get("MONGO_URI", "")
         db_name = None
         try:
-            parsed = urlparse(cfg_uri)
+            parsed = urlparse(self.mongo_uri)
             path = (parsed.path or "/").lstrip("/")
             db_name = path.split("?")[0] or None
         except Exception:
