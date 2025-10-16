@@ -1,6 +1,5 @@
 """Paquete que agrupa patrones de diseño usados por la aplicación."""
 
-from .singleton import SingletonMeta
 from .metrics import (
     MetricBuilder,
     MetricPrototype,
@@ -14,7 +13,6 @@ from .metrics import (
 )
 
 __all__ = [
-    "SingletonMeta",
     "MetricBuilder",
     "MetricPrototype",
     "MetricPrototypeRegistry",

@@ -6,7 +6,6 @@ from dataclasses import asdict
 from typing import Dict, List, Protocol
 
 from app.models.metric import Metric
-from app.patterns.singleton import SingletonMeta
 from app.models.alert import Alert
 
 
@@ -78,7 +77,7 @@ class MetricPrototype:
         return builder.build()
 
 
-class MetricPrototypeRegistry(metaclass=SingletonMeta):
+class MetricPrototypeRegistry:
     """Registro centralizado de prototipos de métricas."""
 
     def __init__(self):
@@ -107,7 +106,7 @@ class MetricObserver(Protocol):
         ...
 
 
-class MetricsObservable(metaclass=SingletonMeta):
+class MetricsObservable:
     """Notifica a observadores cuando se persiste una métrica."""
 
     def __init__(self):
