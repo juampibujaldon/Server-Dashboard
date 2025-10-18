@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Server Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+    <header class="hero">
+        <div class="hero__content">
+            <h1>Panel de Salud de Servidores</h1>
+            <p>Visualiza las métricas clave de tus servidores y detecta anomalías rápidamente.</p>
+        </div>
+    </header>
+
+    <main class="layout">
+        <section class="summary-cards" aria-label="Resumen general">
+            <article class="card">
+                <span class="card__label">Servidores monitoreados</span>
+                <strong class="card__value" data-summary="totalServers">0</strong>
+            </article>
+            <article class="card">
+                <span class="card__label">Métricas registradas</span>
+                <strong class="card__value" data-summary="totalMetrics">0</strong>
+            </article>
+            <article class="card">
+                <span class="card__label">CPU promedio (%)</span>
+                <strong class="card__value" data-summary="avgCpu">0</strong>
+            </article>
+            <article class="card">
+                <span class="card__label">RAM promedio (%)</span>
+                <strong class="card__value" data-summary="avgRam">0</strong>
+            </article>
+            <article class="card">
+                <span class="card__label">Disco promedio (%)</span>
+                <strong class="card__value" data-summary="avgDisk">0</strong>
+            </article>
+            <article class="card">
+                <span class="card__label">Temperatura promedio (°C)</span>
+                <strong class="card__value" data-summary="avgTemperature">0</strong>
+            </article>
+        </section>
+
+        <section class="charts-grid" aria-label="Visualizaciones">
+            <article class="chart-card">
+                <header class="chart-card__header">
+                    <h2>Estado general de la flota</h2>
+                </header>
+                <canvas id="statusChart" aria-label="Gráfico de estado de los servidores"></canvas>
+            </article>
+            <article class="chart-card">
+                <header class="chart-card__header">
+                    <div>
+                        <h2>Evolución de métricas</h2>
+                        <p>Selecciona un servidor para analizar su tendencia.</p>
+                    </div>
+                    <label class="chart-card__selector">
+                        <span class="sr-only">Servidor</span>
+                        <select id="serverSelector" aria-label="Seleccionar servidor"></select>
+                    </label>
+                </header>
+                <canvas id="trendChart" aria-label="Gráfico de tendencias por servidor"></canvas>
+            </article>
+        </section>
+
+        <section class="servers" aria-label="Detalle por servidor">
+            <header class="servers__header">
+                <h2>Detalle de servidores</h2>
+                <p>Última medición y promedio por servidor. Los colores indican el estado actual.</p>
+            </header>
+            <div id="serversContainer" class="servers__grid"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <small>Datos generados por Server Dashboard API.</small>
+    </footer>
+
+    <script>
+        const DASHBOARD_DATA = {{ dashboard_data | safe }};
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js" integrity="sha384-PAfSLWxCCoe9o2YUjIN+J1UoJ9OsHkKIojUs3dPMA0W2KpTXU26bEnF8DMHbZ0Px" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

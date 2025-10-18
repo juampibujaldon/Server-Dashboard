@@ -209,6 +209,10 @@ granian --interface wsgi --host 0.0.0.0 --port 5000 --reload granian_config:app
 -   GET /api/metrics/<server_id>:
     
     Obtiene todas las métricas de un servidor específico. Devuelve `id` serializado (no `_id`).
+
+-   GET /api/dashboard/summary:
+    
+    Devuelve un resumen consolidado con promedios globales, estado de cada servidor y las últimas mediciones para alimentar el dashboard gráfico.
     
 
 ## Testing

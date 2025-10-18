@@ -15,4 +15,7 @@ def create_app(config_name=None):
     from .routes import api as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix="/api")
 
+    from .web import dashboard as dashboard_blueprint
+    app.register_blueprint(dashboard_blueprint)
+
     return app
