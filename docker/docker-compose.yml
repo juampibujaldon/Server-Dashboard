@@ -1,12 +1,12 @@
 services:
-  backend:
+  backend-flask-backend:
     container_name: mi-flask-app
     image: flask-backend:v1.0.0
     build:
       context: ../
       dockerfile: Dockerfile
     ports:
-      - "5000:5000"
+      - "5001:5000"
     environment:
       BACKEND_ENV: ${BACKEND_ENV}
       SECRET_KEY: ${SECRET_KEY}
