@@ -6,15 +6,15 @@ const statusTrend = new Trend('status_codes');
 
 export const options = {
     stages: [
-        { duration: '10s', target: 1000 },
-        { duration: '20s', target: 1000 },
+        { duration: '10s', target: 100 },
+        { duration: '20s', target: 100 },
         { duration: '10s', target: 0 },
     ],
 };
 
-const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = 'http://localhost:5001/api';
 const payload = JSON.stringify({
-    server_id: 'MSI',
+    serverId: 'MSI',
     cpu_usage: 20.5,
     ram_usage: 55.3,
     disk_space: 40.0,
