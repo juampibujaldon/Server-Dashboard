@@ -25,6 +25,7 @@ COPY ./pyproject.toml ./uv.lock ./
 RUN uv sync --locked
 
 COPY ./app ./app
+COPY ./run_granian.py ./run_granian.py
 
 RUN chown -R appuser:appuser /home/appuser
 
@@ -34,4 +35,4 @@ ENV PATH="/home/appuser/.venv/bin:$PATH"
 
 EXPOSE 5000
 
-CMD ["gunicorn", "app:create_app()", "--bind", "0.0.0.0:5000", "--workers", "4", "--log-level", "INFO"]
+CMD ["granian", "--port", "5000", "--host", "0.0.0.0", "--http", "auto", "--workers", "4", "--blocking-threads", "4", "--backlog", "2048", "--interface", "wsgi", "run_granian:app"]

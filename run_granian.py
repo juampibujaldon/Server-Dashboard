@@ -7,12 +7,18 @@ import os
 import subprocess
 import sys
 
+from app import create_app
+
+# Configurar variables de entorno por defecto antes de construir la app
+os.environ.setdefault("BACKEND_ENV", "development")
+
+# Objeto que usará Granian cuando se invoque como `run_granian:app`
+app = create_app()
+
+
 def main():
     """Ejecutar la aplicación con Granian."""
-    
-    # Configurar variables de entorno para desarrollo
-    os.environ.setdefault('BACKEND_ENV', 'development')
-    
+
     # Comando para ejecutar con Granian
     cmd = [
         'granian',
@@ -21,7 +27,7 @@ def main():
         '--port', '5000',
         '--workers', '1',  # Un worker para desarrollo
         '--reload',  # Auto-reload en desarrollo
-        'granian_config:app'
+        'run_granian:app'
     ]
     
     print("🚀 Iniciando servidor con Granian...")

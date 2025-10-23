@@ -182,7 +182,7 @@ python run_granian.py
 uv sync
 export BACKEND_ENV=development
 export MONGO_URI_DEV="mongodb://<user>:<pass>@localhost:27017/DEV_MONITOREAR?authSource=admin"
-granian --interface wsgi --host 0.0.0.0 --port 5000 --reload granian_config:app
+granian --interface wsgi --host 0.0.0.0 --port 5000 --reload run_granian:app
 ```
 
 ### Endpoints de la API
