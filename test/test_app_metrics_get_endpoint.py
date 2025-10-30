@@ -8,7 +8,7 @@ def test_metrics_get_endpoint_serialization(client, db):
     r = client.post("/api/metrics", json=payload)
     assert r.status_code == 201
 
-    r2 = client.get("/api/metrics/srv-get-01")
+    r2 = client.get("/api/metrics", query_string={"server_id": "srv-get-01"})
     assert r2.status_code == 200
     data = r2.get_json()
     assert isinstance(data, list)

@@ -1,13 +1,15 @@
 from flask import Blueprint
 
-from app.resources import MetricsResource, MetricsByServerResource
+from app.resources import MetricsResource, MetricDetailResource
 
 api = Blueprint("api", __name__)
 
 metrics_view = MetricsResource.as_view("metrics")
 api.add_url_rule("/metrics", view_func=metrics_view, methods=["GET", "POST"])
 
-metrics_by_server_view = MetricsByServerResource.as_view("metrics_by_server")
+metric_detail_view = MetricDetailResource.as_view("metric_detail")
 api.add_url_rule(
-    "/metrics/<string:server_id>", view_func=metrics_by_server_view, methods=["GET"],
+    "/metrics/<string:metric_id>",
+    view_func=metric_detail_view,
+    methods=["PUT", "PATCH", "DELETE"],
 )
