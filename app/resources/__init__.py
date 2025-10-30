@@ -1,6 +1,6 @@
-from .metrics_resource import MetricsResource, MetricsByServerResource
+from .metrics_resource import MetricsResource, MetricDetailResource
 
 __all__ = [
     "MetricsResource",
-    "MetricsByServerResource",
+    "MetricDetailResource",
 ]
