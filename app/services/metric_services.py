@@ -1,12 +1,18 @@
+from datetime import datetime
 from typing import Any, Dict, List
+from zoneinfo import ZoneInfo
 
 from app.mapping import MetricMapper
 from app.patterns import MetricBuilder, MetricFactory, get_metrics_observable
 from app.repositories.metrics_repo import MetricsRepository as Repo
 
+ARGENTINA_TZ = ZoneInfo("America/Argentina/Buenos_Aires")
+ARGENTINA_DATETIME_FORMAT = "%d/%m/%Y %H:%M:%S"
+
 
 def save_metric(payload: Dict[str, Any]) -> str:
     metric = MetricFactory.from_payload(payload)
+    metric.sent_at = datetime.now(ARGENTINA_TZ).strftime(ARGENTINA_DATETIME_FORMAT)
     doc = MetricMapper.to_document(metric)
     metric_id = Repo.insert(doc)
 

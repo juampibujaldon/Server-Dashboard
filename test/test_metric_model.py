@@ -23,8 +23,9 @@ def test_metric_fields(metric_sample):
 
 def test_metric_to_dict(metric_sample):
     d = metric_sample.to_dict()
-    assert set(d.keys()) == {"server_id", "cpu_usage", "ram_usage", "disk_space", "temperature", "id"}
+    assert set(d.keys()) == {"server_id", "cpu_usage", "ram_usage", "disk_space", "temperature", "id", "sent_at"}
     assert d["server_id"] == "srv-1"
+    assert d["sent_at"] is None
 
 def test_metric_value_equality():
     a = Metric("s", 1.0, 2.0, 3.0, 4.0)

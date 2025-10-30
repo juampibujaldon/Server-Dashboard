@@ -1,3 +1,8 @@
+from datetime import datetime
+
+from app.services.metric_services import ARGENTINA_DATETIME_FORMAT
+
+
 def test_metrics_get_endpoint_serialization(client, db):
     payload = {"server_id":"srv-get-01","cpu_usage":10.0,"ram_usage":20.0,"disk_space":30.0,"temperature":40.0}
     r = client.post("/api/metrics", json=payload)
@@ -12,3 +17,5 @@ def test_metrics_get_endpoint_serialization(client, db):
     # Debe existir 'id' serializado y no '_id'
     assert "id" in first
     assert "_id" not in first
+    assert "sent_at" in first
+    datetime.strptime(first["sent_at"], ARGENTINA_DATETIME_FORMAT)

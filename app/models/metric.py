@@ -8,6 +8,7 @@ class Metric:
     ram_usage: float
     disk_space: float
     temperature: float
+    sent_at: Optional[str] = None
     id: Optional[str] = None
 
     def to_dict(self):
