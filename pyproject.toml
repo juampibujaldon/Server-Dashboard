@@ -13,6 +13,7 @@ dependencies = [
     "PyJWT==2.8.0",
     "mongomock>=4.3.0",
     "pytest-env>=1.1.5",
+    "flask-cors>=5.0.0",
 ]
 
 [dependency-groups]
