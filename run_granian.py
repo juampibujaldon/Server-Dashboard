@@ -24,14 +24,13 @@ def main():
         'granian',
         '--interface', 'wsgi',
         '--host', '0.0.0.0',
-        '--port', '5000',
+        '--port', '5001',
         '--workers', '1',  # Un worker para desarrollo
-        '--reload',  # Auto-reload en desarrollo
         'run_granian:app'
     ]
     
     print("🚀 Iniciando servidor con Granian...")
-    print(f"📍 URL: http://localhost:5000")
+    print(f"📍 URL: http://localhost:5001")
     print(f"⚙️  Comando: {' '.join(cmd)}")
     print("-" * 50)
     
