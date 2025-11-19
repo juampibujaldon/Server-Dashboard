@@ -1,5 +1,6 @@
-from typing import Dict, List, Any, Optional
 from dataclasses import asdict
+from typing import Any, Dict, List, Optional
+
 from app.models.alert import Alert
 from app.repositories.alerts_repo import AlertsRepository as Repo
 

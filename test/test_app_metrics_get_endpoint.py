@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from app.services.metric_services import ARGENTINA_DATETIME_FORMAT
+from app.services.metric_services import DATETIME_FORMAT
 
 
 def test_metrics_get_endpoint_serialization(client, db):
@@ -18,4 +18,4 @@ def test_metrics_get_endpoint_serialization(client, db):
     assert "id" in first
     assert "_id" not in first
     assert "sent_at" in first
-    datetime.strptime(first["sent_at"], ARGENTINA_DATETIME_FORMAT)
+    datetime.strptime(first["sent_at"], DATETIME_FORMAT)

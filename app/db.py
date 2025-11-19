@@ -7,7 +7,6 @@ from bson import ObjectId
 from pymongo import MongoClient
 from pymongo.errors import ConfigurationError, ServerSelectionTimeoutError
 
-
 try:
     import mongomock
 except Exception:
@@ -38,30 +37,6 @@ class _DeleteResult:
 class _InMemoryCollection:
     def __init__(self):
         self._docs = []
-
-    def _ensure_id(self, doc):
-        if doc.get("_id") is None:
-            doc["_id"] = ObjectId()
-        elif not isinstance(doc["_id"], ObjectId):
-            doc["_id"] = ObjectId(str(doc["_id"]))
-
-    @staticmethod
-    def _matches(doc, query):
-        if not query:
-            return True
-        for key, expected in query.items():
-            actual = doc.get(key)
-            if key == "_id":
-                if isinstance(expected, ObjectId):
-                    if actual != expected:
-                        return False
-                else:
-                    if str(actual) != str(expected):
-                        return False
-            else:
-                if actual != expected:
-                    return False
-        return True
 
     def insert_one(self, doc):
         new_doc = deepcopy(doc)
@@ -126,6 +101,30 @@ class _InMemoryCollection:
 
     def create_index(self, *_args, **_kwargs):
         return "in_memory_index"
+
+    def _ensure_id(self, doc):
+        if doc.get("_id") is None:
+            doc["_id"] = ObjectId()
+        elif not isinstance(doc["_id"], ObjectId):
+            doc["_id"] = ObjectId(str(doc["_id"]))
+
+    @staticmethod
+    def _matches(doc, query):
+        if not query:
+            return True
+        for key, expected in query.items():
+            actual = doc.get(key)
+            if key == "_id":
+                if isinstance(expected, ObjectId):
+                    if actual != expected:
+                        return False
+                else:
+                    if str(actual) != str(expected):
+                        return False
+            else:
+                if actual != expected:
+                    return False
+        return True
 
 
 class _InMemoryDatabase:

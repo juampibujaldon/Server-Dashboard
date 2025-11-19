@@ -1,5 +1,7 @@
 import pytest
+
 from app.models.metric import Metric
+
 
 @pytest.fixture
 def metric_sample():

@@ -1,4 +1,5 @@
 import os
+
 import pytest
 
 os.environ["BACKEND_ENV"] = "testing"
@@ -6,6 +7,7 @@ os.environ.setdefault("MONGO_URI_TEST", "mongodb://monitoreo_user:monitoreo_pass
 
 from app import create_app
 from app.db import db_manager
+
 
 @pytest.fixture(scope="session")
 def app_instance():

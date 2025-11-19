@@ -1,7 +1,10 @@
 from datetime import datetime
+
 from bson import ObjectId
+
 from app.models.metric import Metric
 from app.services import metric_services as svc
+
 
 def test_create_and_list_by_server(db):
     m = Metric("srv-1", 70.0, 60.0, 80.0, 50.0).to_dict()
@@ -16,7 +19,7 @@ def test_create_and_list_by_server(db):
     sent_at = doc.get("sent_at")
     assert isinstance(sent_at, str)
     # Fecha y hora locales (AR) para trazabilidad
-    datetime.strptime(sent_at, svc.ARGENTINA_DATETIME_FORMAT)
+    datetime.strptime(sent_at, svc.DATETIME_FORMAT)
 
 def test_update_by_id(db):
     mid = svc.save_metric(Metric("srv-upd", 1.0, 2.0, 3.0, 4.0).to_dict())

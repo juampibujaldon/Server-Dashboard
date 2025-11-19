@@ -1,4 +1,4 @@
-from .metrics_resource import MetricsResource, MetricDetailResource
+from .metrics_resource import MetricDetailResource, MetricsResource
 
 __all__ = [
     "MetricsResource",

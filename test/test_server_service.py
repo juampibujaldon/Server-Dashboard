@@ -1,6 +1,8 @@
 from bson import ObjectId
+
 from app.models.server import Server
 from app.services import server_services as svc
+
 
 def test_create_and_get(db):
     sid = svc.create_server(Server("s1", "10.0.0.1", "active"))

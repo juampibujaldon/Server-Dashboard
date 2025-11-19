@@ -1,4 +1,4 @@
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 def serialize_doc(doc: Dict[str, Any]) -> Dict[str, Any]:

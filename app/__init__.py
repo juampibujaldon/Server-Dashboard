@@ -1,8 +1,11 @@
 import os
+
 from flask import Flask
 from flask_cors import CORS
+
 from .config.config import config_by_name
 from .db import db_manager
+
 
 def create_app(config_name=None):
     if config_name is None:

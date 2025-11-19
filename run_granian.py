@@ -1,25 +1,16 @@
-#!/usr/bin/env python3
-"""
-Script para ejecutar la aplicación con Granian en modo desarrollo.
-"""
-
 import os
 import subprocess
 import sys
 
 from app import create_app
 
-# Configurar variables de entorno por defecto antes de construir la app
 os.environ.setdefault("BACKEND_ENV", "development")
 
-# Objeto que usará Granian cuando se invoque como `run_granian:app`
 app = create_app()
 
 
 def main():
-    """Ejecutar la aplicación con Granian."""
 
-    # Comando para ejecutar con Granian
     cmd = [
         'granian',
         '--interface', 'wsgi',

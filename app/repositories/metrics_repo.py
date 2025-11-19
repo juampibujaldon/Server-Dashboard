@@ -1,14 +1,10 @@
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List, Optional
+
 from bson import ObjectId
 from bson.errors import InvalidId
 
 
 class MetricsRepository:
-    @staticmethod
-    def _col():
-        from app.db import db_manager
-        return db_manager.get_db().metrics
-
     @classmethod
     def insert(cls, metric: Dict[str, Any]) -> str:
         res = cls._col().insert_one(metric)
@@ -44,3 +40,9 @@ class MetricsRepository:
     def delete_by_server(cls, server_id: str) -> int:
         res = cls._col().delete_many({"server_id": server_id})
         return res.deleted_count
+
+    @staticmethod
+    def _col():
+        from app.db import db_manager
+
+        return db_manager.get_db().metrics

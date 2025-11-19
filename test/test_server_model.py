@@ -1,6 +1,9 @@
-import pytest
 from dataclasses import asdict
+
+import pytest
+
 from app.models.server import Server
+
 
 @pytest.fixture
 def server_sample():

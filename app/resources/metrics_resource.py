@@ -3,7 +3,8 @@ from flask.views import MethodView
 
 from app.services import metric_services
 from app.utils.serialization import serialize_many
-from app.utils.validation import validate_metric_payload, validate_metric_update_payload
+from app.utils.validation import (validate_metric_payload,
+                                  validate_metric_update_payload)
 
 
 class MetricsResource(MethodView):

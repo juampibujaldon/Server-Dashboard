@@ -1,5 +1,7 @@
 import pytest
+
 from app.models.alert import Alert
+
 
 @pytest.fixture
 def alert_sample():

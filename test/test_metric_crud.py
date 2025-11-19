@@ -1,5 +1,7 @@
 from bson import ObjectId
+
 from app.models.metric import Metric
+
 
 def test_create_metric(db):
     doc = Metric("srv-crud", 10.0, 20.0, 30.0, 40.0).to_dict()

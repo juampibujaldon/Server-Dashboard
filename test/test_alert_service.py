@@ -1,6 +1,8 @@
 from bson import ObjectId
+
 from app.models.alert import Alert
 from app.services import alert_services as svc
+
 
 def test_create_and_get_by_id(db):
     aid = svc.create_alert(Alert("srv-1", "cpu_usage", 80.0, ">"))

@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from app.resources import MetricsResource, MetricDetailResource
+from app.resources import MetricDetailResource, MetricsResource
 
 api = Blueprint("api", __name__)
 

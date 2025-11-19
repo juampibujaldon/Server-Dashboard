@@ -1,5 +1,4 @@
-from typing import Dict, Any, Tuple
-
+from typing import Any, Dict, Tuple
 
 REQUIRED_METRIC_FIELDS = ("server_id", "cpu_usage", "ram_usage", "disk_space", "temperature")
 ALLOWED_METRIC_UPDATE_FIELDS = (

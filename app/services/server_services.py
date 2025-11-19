@@ -1,6 +1,7 @@
-from typing import Dict, List, Any, Optional
-from app.models.server import Server
 from dataclasses import asdict
+from typing import Any, Dict, List, Optional
+
+from app.models.server import Server
 from app.repositories.servers_repo import ServersRepository as Repo
 
 
